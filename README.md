@@ -1,6 +1,7 @@
 # LSM6DSO
 
 ![LSM6DSObreadboard](https://user-images.githubusercontent.com/6698410/61259719-45a1a100-a730-11e9-8fb8-febeca2fea61.jpg)
+*This is the LSM6DSO accel/gyro on a breakout board made for the LSM6DSM as master to the LIS2MDL magnetometer and LPS22HB barometer*
 
 The LSM6DSO is the successor to the LSM6DSM combination accel/gyro, currently one of the most accurate and stable "cell-phone" sensors available. When coupled with an LIS2MDL magnetometer, either of these accel/gyros combinations can [routinely](https://hackaday.com/wp-content/uploads/2019/03/hackaday_journal-gregorytomasch_kriswiner-heading_accuracy_using_mems_sensors.pdf) produce absolute orientation estimation with sub one-degree rms heading accuray with proper calibration. The LSM6DSO also embeds a finite state machine which enables machine learning so that user-defined motion and gestures can be processed and recognized quickly and with ultra-low power usage. From the data sheet:
 
