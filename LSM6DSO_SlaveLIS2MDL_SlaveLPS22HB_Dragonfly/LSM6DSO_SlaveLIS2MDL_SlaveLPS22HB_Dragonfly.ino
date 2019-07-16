@@ -427,16 +427,14 @@ void loop() {
     Serial.print("rate = "); Serial.print((float)sumCount/sum, 2); Serial.println(" Hz");
     }
 
-//     Serial.print(millis()/1000);Serial.print(",");
-//     Serial.print(yaw, 2); Serial.print(","); Serial.print(pitch, 2); Serial.print(","); Serial.print(roll, 2); Serial.print(","); Serial.println(Pressure, 2);
-
     sumCount = 0;
     sum = 0;      
 
     digitalWrite(myLed, LOW); delay(1); digitalWrite(myLed, HIGH);   
     }
+      
+      // STM32.stop(); // sleep while waiting for an interrupt
 }
-
 /*  End of main loop */
 
 
