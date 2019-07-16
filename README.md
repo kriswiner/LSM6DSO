@@ -1,1 +1,12 @@
 # LSM6DSO
+The LSM6DSO is the successor to the LSM6DSM combination accel/gyro, currently one of the most accurate and stable "cell-phone" sensors available. When coupled with an LIS2MDL magnetometer, either of these accel/gyros combinations can [routinely](https://hackaday.com/wp-content/uploads/2019/03/hackaday_journal-gregorytomasch_kriswiner-heading_accuracy_using_mems_sensors.pdf) produce absolute orientation estimation with sub one-degree rms heading accuray with proper calibration. The LSM6DSO also embeds a finite state machine which enables machine learning so that user-defined motion and gestures can be processed and recognized quickly and with ultra-low power usage> From the data sheet:
+
+*"The LSM6DSO can be configured to generate interrupt signals activated by user-defined motion patterns. To do
+this, up to 16 embedded finite state machines can be programmed independently for motion detection such as
+glance gestures, absolute wrist tilt, shake and double-shake detection."*
+
+The first sketch in this repository configures the LSM6DSO as a master to a LIS2MDL slave magnetometer and LPS22HB slave barometer. The sketch configures all sensors with full-scale range, sample rate, low-pass filtering, etc. The LSM6DSO manages the sensors on master mode, reading their data on a separate master I2C data bus so that simple batch reading of the LSM6DSO is all that is required to access all of the sensor data. This data pipeline facilitates subsequent data processing on the LSM6DSO and detection of specific and complicated motions via the finite state machine function.
+
+The basic sketch further scales the sansor data, uses Madgwick open-source sensor fusion to combine the data into an absolute orientation estimation with yaw (heading), pitch and roll output to the serial monitor along with the scaled sensor data and environmental data such as pressure and temperature.
+
+Subsequent sketches reposited here will explore the use of the finitie state machine for machine learning, etc.
