@@ -309,7 +309,6 @@ void loop() {
           LSM6DSO.passthruMode();                // enable passthrough mode to initialize all the sensors
           LIS2MDL.sleep(MODR);                   // set LIS2MDL to idle mode
           LPS22H.sleep();                        // set LPS22HB to idle mode
-          LSM6DSO.masterMode();                  // enable master mode to initialize all the sensors
 
           LSM6DSO.sleepMode();
 
@@ -318,7 +317,6 @@ void loop() {
        }
        else if (count > 10 && sleepFlag)
        {
-          LSM6DSO.passthruMode();               // enable passthrough mode to initialize all the sensors
           LIS2MDL.wake(MODR);                   // set LIS2MDL to wake mode
           LPS22H.wake(PODR);                    // set LPS22HB to wake mode
           LSM6DSO.masterMode();                 // enable master mode to initialize all the sensors
