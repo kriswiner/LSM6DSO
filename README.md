@@ -15,6 +15,6 @@ The basic sketch uses a simple method to calibrate the sensors, scales the senso
 
 Subsequent sketches reposited here will explore the use of the finite state machine for machine learning and low-power gesture recognition, etc.
 
-All sketches uses the Dragonfly development board as MCU, which is capable of ultra-low power operation with just 2.1 uA current usage in fast-wakeup STOP mode. The basic sketch shows how to put the sensors to sleep and wake them up such that the total current usage for the system above in lowest-power sleep mode can be less than 8 uA.
+All sketches use the Dragonfly development board as MCU, which is capable of ultra-low power operation with just 2.1 uA current usage in fast-wakeup STOP mode. The basic sketch shows how to put the sensors to sleep and wake them up such that the total current usage for the system above in lowest-power sleep mode is ~11 uA.
 
 
