@@ -334,7 +334,7 @@ void LSM6DSO::init(uint8_t Ascale, uint8_t Gscale, uint8_t AODR, uint8_t GODR)
   //  mask data ready until filter settle complete (bit 3)
 //  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL4_C, 0x08);
   
-  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL9_XL, 0x01 );  // disable I3C MIPI interface
+  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL9_XL, 0x02 );  // disable I3C MIPI interface
 
   // interrupt handling
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_COUNTER_BDR_REG1, 0x80); // data ready pulsed mode
