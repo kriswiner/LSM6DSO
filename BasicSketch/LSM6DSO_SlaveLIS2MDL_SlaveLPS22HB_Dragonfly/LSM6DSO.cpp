@@ -51,11 +51,14 @@ void LSM6DSO::wakeMode(uint8_t AODR, uint8_t GODR)
 
 void LSM6DSO::passthruMode()
 {
-   // START_CONFIG = bit 5, PASSTHRU = bit 4, PULLUP_EN = bit 3, MASTER_ON = bit 2
+  // START_CONFIG = bit 5, PASSTHRU = bit 4, PULLUP_EN = bit 3, MASTER_ON = bit 2
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_FUNC_CFG_ACCESS, 0x40);                    // enable sensor hub access
-  delay(100);  
-  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG,  0x20);                     // set START_CONFIG bit to disable sensor hub trigger
-  delay(10);
+  uint8_t temp = _i2c_bus->readByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG);              // preserve MASTER_CONFIG 
+  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG, temp | 0x20);               // set START_CONFIG bit (bit 5) to 1 to disable sensor hub trigger
+  delay(5);
+  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG, (temp | 0x20) & ~(0x04));             // set MASTER_ON bit (bit 2) to 0
+  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG, temp & ~(0x04) & ~(0x20));            // set START_CONFIG bit (bit 5) to 0
+  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG, temp & ~(0x04) & ~(0x20) & ~(0x08));  // set PULLUP_EN bit (bit 3) to to 0
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG, 0x10);                      // enable pass through  
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_FUNC_CFG_ACCESS, 0x00);                    // disable embedded functions
 }
