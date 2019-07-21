@@ -47,7 +47,7 @@ void LSM6DSO::wakeMode(uint8_t AODR, uint8_t GODR)
   uint8_t tempa = _i2c_bus->readByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL1_XL);
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL1_XL, tempa | AODR << 4 );
   uint8_t tempg = _i2c_bus->readByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL2_G); 
-  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL2_G,  tempg  | GODR << 4 );  // power up gyro sensor
+  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL2_G,  tempg | GODR << 4 );  // power up gyro sensor
 //  uint8_t tempg = _i2c_bus->readByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL4_C);
 //  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL4_C,  tempg & ~(0x40) ); // disable gyro sleep mode  
 }
@@ -58,7 +58,7 @@ void LSM6DSO::idleLIS2MDL(uint8_t MODR)
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_FUNC_CFG_ACCESS, 0x40);                   // enable sensor hub access
   uint8_t temp = _i2c_bus->readByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG);             // preserve contents of MASTER_CONFIG register
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG,  temp & ~(0x04));          // Turn off I2C master
-  delayMicroseconds(300);                                                                // wait 200 microseconds
+  delayMicroseconds(300);                                                                // wait 300 microseconds
 
   // Change Sensor Hub configuration
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_SLV0_ADD, (LIS2MDL_ADDRESS << 1));        // enable slave sensor write operation
@@ -106,10 +106,9 @@ void LSM6DSO::resumeLIS2MDL(uint8_t MODR)
 void LSM6DSO::resumeLPS22HB(uint8_t PODR)
 {
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_FUNC_CFG_ACCESS, 0x40);                   // enable sensor hub access
-  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_FUNC_CFG_ACCESS, 0x40);                   // enable sensor hub access
   uint8_t temp = _i2c_bus->readByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG);             // preserve contents of MASTER_CONFIG register
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG,  temp & ~(0x04));          // Turn off I2C master
-  delayMicroseconds(300);                                                                // wait 200 microseconds
+  delayMicroseconds(300);                                                                // wait 300 microseconds
 
   // Change Sensor Hub configuration
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_SLV1_ADD, (LPS22H_ADDRESS << 1));         // enable slave sensor write operation
@@ -125,11 +124,13 @@ void LSM6DSO::passthruMode()
 {
   // START_CONFIG = bit 5, PASSTHRU = bit 4, PULLUP_EN = bit 3, MASTER_ON = bit 2
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_FUNC_CFG_ACCESS, 0x40);                    // enable sensor hub access
-  delay(100);  
-  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG,  0x20);                     // set START_CONFIG bit to disable sensor hub trigger
-  delay(100);
+  uint8_t temp = _i2c_bus->readByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG);              // preserve MASTER_CONFIG 
+  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG, temp | 0x20);               // set START_CONFIG bit (bit 5) to 1 to disable sensor hub trigger
+  delay(5);
+  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG, (temp | 0x20) & ~(0x04));             // set MASTER_ON bit (bit 2) to 0
+  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG, temp & ~(0x04) & ~(0x20));            // set START_CONFIG bit (bit 5) to 0
+  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG, temp & ~(0x04) & ~(0x20) & ~(0x08));  // set PULLUP_EN bit (bit 3) to to 0
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG, 0x10);                      // enable pass through  
-  delay(100);
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_FUNC_CFG_ACCESS, 0x00);                    // disable embedded functions
 }
 
@@ -158,7 +159,7 @@ void LSM6DSO::masterMode()
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_SLV1_SUBADD, LPS22H_PRESS_OUT_XL);        // select slave sensor starting register for read operation
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_SLV1_CONFIG, 0x05);                       // five bytes to read
 
-  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG, 0x08 | 0x04 | 0x01);       // enable master mode (bit 2), internal pullups (bit 3), accel trigger drdy, two external sensors (bits 0/1)
+  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_MASTER_CONFIG, 0x40 | 0x08 | 0x04 | 0x01);// set write once bit (bit 6) to 1, enable master mode (bit 2), internal pullups (bit 3), accel trigger drdy, two external sensors (bits 0/1)
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_FUNC_CFG_ACCESS, 0x00);                   // disable sensor hub access
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL6_C, 0x00);                           // unconfigure INT2 as input
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL1_XL, c);                             // reset accel with previous configuration
@@ -325,16 +326,15 @@ void LSM6DSO::init(uint8_t Ascale, uint8_t Gscale, uint8_t AODR, uint8_t GODR)
 
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL2_G, GODR << 4 | Gscale << 1); // set gyro full scale and sample rate
 
-  uint8_t temp = _i2c_bus->readByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL3_C);
   // enable block update (bit 6 = 1), auto-increment registers (bit 2 = 1)
-  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL3_C, temp | 0x40 | 0x04);
+  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL3_C, 0x40 | 0x04);
   // by default, interrupts active HIGH, push pull, little endian data
   // (can be changed by writing to bits 5, 4, and 1, resp to above register)
 
   //  mask data ready until filter settle complete (bit 3)
 //  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL4_C, 0x08);
   
-  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL9_XL, 0x02 );  // disable I3C MIPI interface
+  _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_CTRL9_XL, 0x02);  // disable I3C MIPI interface
 
   // interrupt handling
   _i2c_bus->writeByte(LSM6DSO_ADDRESS, LSM6DSO_COUNTER_BDR_REG1, 0x80); // data ready pulsed mode
@@ -549,4 +549,3 @@ void LSM6DSO::readAccelGyroData(int16_t * destination)
   destination[5] = (int16_t)((int16_t)rawData[11] << 8) | rawData[10] ;
   destination[6] = (int16_t)((int16_t)rawData[13] << 8) | rawData[12] ;
 }
-
