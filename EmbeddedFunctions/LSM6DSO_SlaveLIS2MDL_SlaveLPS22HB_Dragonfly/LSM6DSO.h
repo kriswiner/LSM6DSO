@@ -25,6 +25,9 @@
 */
 #define LSM6DSO_FUNC_CFG_ACCESS           0x01
 #define LSM6DSO_PIN_CTRL                  0x02
+#define LSM6DSO_S4S_TPH_L                 0x04
+#define LSM6DSO_S4S_TPH_H                 0x05
+#define LSM6DSO_S4S_RR                    0x06
 #define LSM6DSO_FIFO_CTRL1                0x07
 #define LSM6DSO_FIFO_CTRL2                0x08
 #define LSM6DSO_FIFO_CTRL3                0x09
@@ -66,6 +69,7 @@
 #define LSM6DSO_EMB_FUNC_STATUS_MAINPAGE  0x35
 #define LSM6DSO_FSM_STATUS_A_MAINPAGE     0x36
 #define LSM6DSO_FSM_STATUS_B_MAINPAGE     0x37
+#define LSM6DSO_MLC_STATUS_MAINPAGE       0x38
 #define LSM6DSO_STATUS_MASTER_MAINPAGE    0x39
 #define LSM6DSO_FIFO_STATUS1              0x3A
 #define LSM6DSO_FIFO_STATUS2              0x3B
@@ -73,6 +77,19 @@
 #define LSM6DSO_TIMESTAMP1                0x41
 #define LSM6DSO_TIMESTAMP2                0x42
 #define LSM6DSO_TIMESTAMP3                0x43
+#define LSM6DSO_UI_STATUS_REG_OIS         0x49
+#define LSM6DSO_UI_OUTX_L_G_OIS           0x4A
+#define LSM6DSO_UI_OUTX_H_G_OIS           0x4B
+#define LSM6DSO_UI_OUTY_L_G_OIS           0x4C
+#define LSM6DSO_UI_OUTY_H_G_OIS           0x4D
+#define LSM6DSO_UI_OUTZ_L_G_OIS           0x4E
+#define LSM6DSO_UI_OUTZ_H_G_OIS           0x4F
+#define LSM6DSO_UI_OUTX_L_A_OIS           0x50
+#define LSM6DSO_UI_OUTX_H_A_OIS           0x51
+#define LSM6DSO_UI_OUTY_L_A_OIS           0x52
+#define LSM6DSO_UI_OUTY_H_A_OIS           0x53
+#define LSM6DSO_UI_OUTZ_L_A_OIS           0x54
+#define LSM6DSO_UI_OUTZ_H_A_OIS           0x55
 #define LSM6DSO_TAP_CFG0                  0x56
 #define LSM6DSO_TAP_CFG1                  0x57
 #define LSM6DSO_TAP_CFG2                  0x58
@@ -83,6 +100,8 @@
 #define LSM6DSO_FREE_FALL                 0x5D
 #define LSM6DSO_MD1_CFG                   0x5E
 #define LSM6DSO_MD2_CFG                   0x5F
+#define LSM6DSO_S4S_ST_CMD_CODE           0x60
+#define LSM6DSO_S4S_DT_REG                0x61
 #define LSM6DSO_I3C_BUS_AVB               0x62
 #define LSM6DSO_INTERNAL_FREQ_FINE        0x63
 #define LSM6DSO_INT_OIS                   0x6F
@@ -137,13 +156,22 @@
 #define LSM6DSO_FSM_OUTS13                0x58
 #define LSM6DSO_FSM_OUTS14                0x59
 #define LSM6DSO_FSM_OUTS15                0x5A
-#define LSM6DSO_FSM_OUTS116               0x5B
+#define LSM6DSO_FSM_OUTS16                0x5B
 #define LSM6DSO_EMB_FUNC_ODR_CFG_B        0x5F
+#define LSM6DSO_EMB_FUNC_ODR_CFG_C        0x60
 #define LSM6DSO_STEP_COUNTER_L            0x62
 #define LSM6DSO_STEP_COUNTER_H            0x63
 #define LSM6DSO_EMB_FUNC_SRC              0x64
 #define LSM6DSO_EMB_FUNC_INIT_A           0x66
 #define LSM6DSO_EMB_FUNC_INIT_B           0x67
+#define LSM6DSO_MLC0_SRC                  0x70
+#define LSM6DSO_MLC1_SRC                  0x71
+#define LSM6DSO_MLC2_SRC                  0x72
+#define LSM6DSO_MLC3_SRC                  0x73
+#define LSM6DSO_MLC4_SRC                  0x74
+#define LSM6DSO_MLC5_SRC                  0x75
+#define LSM6DSO_MLC6_SRC                  0x76
+#define LSM6DSO_MLC7_SRC                  0x77
 
 // Page 0
 #define LSM6DSO_MAG_SENSITIVITY_L         0xBA
@@ -179,6 +207,8 @@
 #define LSM6DSO_PEDO_DEB_STEPS_CONF       0x84
 #define LSM6DSO_PEDO_SC_DELTAT_L          0xD0
 #define LSM6DSO_PEDO_SC_DELTAT_H          0xD1
+#define LSM6DSO_MLC_MAG_SENSITIVITY_L     0xE8
+#define LSM6DSO_MLC_MAG_SENSITIVITY_H     0xE9
 
 // Sensor Hub Registers
 #define LSM6DSO_SENSOR_HUB_1              0x02
